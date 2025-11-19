@@ -1,0 +1,26 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+.home-section{
+background: url('/public/back.jpg');
+
+min-height: 70vh;
+background-position: center;
+background-size: 120vh;
+background-repeat: no-repeat;
+background-size: cover;
+
+}
+
+.section-2{
+    min-height: 100vh;
+}
+.section-3{
+    min-height:100vh ;
+}
+.auth{
+    background: url('https://images.unsplash.com/photo-1610072175216-df383b91b89d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
