@@ -2,7 +2,7 @@ body{
     font-family: 'Times New Roman', Times, serif;
 }
 .home-section{
-background: url('/public/back.jpg');
+background: url('/back.jpg');
 
 min-height: 70vh;
 background-position: center;

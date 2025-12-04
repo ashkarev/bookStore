@@ -1,39 +1,49 @@
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
-import Header from './components/Header'
-import Home from './pages/Home'
-import Books from './pages/Books'
-import Contact from './pages/Contact'
-import Auth from './pages/Auth'
-import Footer from './components/Footer'
-import Pnf from './pages/Pnf'
-import { useState } from 'react'
-import Loader from './components/Loader'
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Books from "./pages/Books";
+import Contact from "./pages/Contact";
+import Auth from "./pages/Auth";
+import Footer from "./components/Footer";
+import Pnf from "./pages/Pnf";
+import { useState } from "react";
+import Loader from "./components/Loader";
+import { Flip, ToastContainer } from "react-toastify";
 
 function App() {
+  const [showLoad, setShowLoad] = useState(false);
 
-  const [showLoad,setShowLoad]=useState(false)
-
-  setTimeout(()=>{
-    setShowLoad(true)
-  },3000)
+  setTimeout(() => {
+    setShowLoad(true);
+  }, 3000);
 
   return (
     <>
-    
-    <Routes>
-      <Route path='/' element={showLoad? <Home /> : <Loader />} />
-      <Route path='/books' element={<Books />} />
-      <Route path='/contact' element={<Contact />} />
-      <Route path='/login' element={<Auth />} />
-      <Route path='/register' element={<Auth  insideRegister={true} />} />
-      <Route path='/*' element={<Pnf />} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={showLoad ? <Home /> : <Loader />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/register" element={<Auth insideRegister={true} />} />
+        <Route path="/*" element={<Pnf />} />
+      </Routes>
 
-
-      
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Flip}
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
