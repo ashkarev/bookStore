@@ -26,7 +26,7 @@ function App() {
       <Route path='/books' element={<Books />} />
       <Route path='/contact' element={<Contact />} />
       <Route path='/login' element={<Auth />} />
-      <Route path='/register' element={<Auth />} />
+      <Route path='/register' element={<Auth  insideRegister={true} />} />
       <Route path='/*' element={<Pnf />} />
     </Routes>
 
