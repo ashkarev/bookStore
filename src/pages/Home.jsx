@@ -47,8 +47,8 @@ const Home = () => {
   </div>
   {/* section-3 */}
   <div className="section-3 grid">
-    <div class="grid grid-cols-2 ">
-  <div class=" mx-20">
+    <div className="grid grid-cols-2 ">
+  <div className=" mx-20">
   <h1 className='text-2xl text-center'>FEATURED  AUTHORS</h1>
   <h1 className='text-xl text-center'>Captivates with every word</h1>
   <p className='my-10'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt fuga nostrum illum distinctio eum quidem recusandae soluta aliquam laboriosam odit quas, nam molestias fugiat culpa rem nulla iste? Modi, molestias. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt earum possimus accusantium necessitatibus id neque soluta quibusdam explicabo laborum? Deserunt vel quia voluptates dicta incidunt illo fuga pariatur sequi error. <br /> <br /> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis nulla similique dolor, repellendus suscipit aut, velit nesciunt odit cum voluptas maxime ab autem voluptatum, eligendi quas dolorum. Suscipit, sit iusto!</p>
