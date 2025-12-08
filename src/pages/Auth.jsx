@@ -2,12 +2,13 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser, registerUser } from "../services/allApi";
+import { googleLoginApi, loginUser, registerUser } from "../services/allApi";
 import { Flip, toast } from "react-toastify";
-
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const Auth = ({ insideRegister }) => {
-const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
     userName: "",
@@ -22,53 +23,71 @@ const navigate=useNavigate()
         userData.email == "" ||
         userData.password == ""
       ) {
-       toast.error('pls fill the form')
+        toast.error("pls fill the form");
       } else {
         let apiresponce = await registerUser(userData);
         if (apiresponce.status == 201) {
-        toast.success('good boy')
-  
-        navigate('/login')
+          toast.success("good boy");
 
+          navigate("/login");
 
           console.log(apiresponce);
         } else {
-         console.log(apiresponce)
-          toast.error(apiresponce.response.data.message)
+          console.log(apiresponce);
+          toast.error(apiresponce.response.data.message);
         }
       }
     } catch (error) {
-     toast.error('something went wrong')
+      toast.error("something went wrong");
     }
   };
 
-  const onLoginClick=async()=>{
+  const onLoginClick = async () => {
     try {
-    let reqBody={
-      email:userData.email,
-      password:userData.password
+      let reqBody = {
+        email: userData.email,
+        password: userData.password,
+      };
 
+      let apires = await loginUser(reqBody);
+      if (apires.status == 200) {
+        toast.success("Login Success");
+
+        localStorage.setItem("token", apires.data.token);
+        console.log(apires);
+
+        navigate("/");
+      } else {
+        toast.error(apires.response.data.message);
+      }
+    } catch (error) {
+      toast.error("something went wrong");
+      console.log(error);
     }
+  };
 
-    let apires=await loginUser(reqBody)
-    if(apires.status==200){
-      toast.success('Login Success')
- 
+  const decodefn=async(credentials)=>{
+    console.log(credentials)
+
+    let decodedata=jwtDecode(credentials.credential)
+    console.log(decodedata)
+
+    let payload={
+      userName:decodedata.name,
+      email:decodedata.email,
+      proPic:decodedata.picture
+    }
+    let apires=await googleLoginApi(payload)
+    console.log(apires)
+
+    if(apires.status==200 || apires.status==201){
+      toast.success(apires.data.message)
       localStorage.setItem('token',apires.data.token)
-      console.log(apires)
-
       navigate('/')
-
-
     }else{
       toast.error(apires.response.data.message)
     }
 
-      
-    } catch (error) {
-      toast.error('something went wrong')
-      console.log(error)
-    }
   }
 
   return (
@@ -83,7 +102,6 @@ const navigate=useNavigate()
             <div className="text-center text-white text-4xl">
               <FontAwesomeIcon icon={faUser} />
             </div>
-
             <div className="mx-15">
               {insideRegister && (
                 <input
@@ -112,14 +130,12 @@ const navigate=useNavigate()
                 placeholder="password"
               />
             </div>
-
             <div className="flex justify-evenly">
               <p className="text-yellow-300 text-sm">
                 *Never share your password with orthers
               </p>
               <p className="text-white">Forget Password</p>
             </div>
-
             {insideRegister ? (
               <button
                 onClick={registerClick}
@@ -128,13 +144,25 @@ const navigate=useNavigate()
                 register
               </button>
             ) : (
-              <button onClick={onLoginClick} className="border-0 bg-green-700 w-75 p-2 rounded-xl text-white mx-15 mt-7">
+              <button
+                onClick={onLoginClick}
+                className="border-0 bg-green-700 w-75 p-2 rounded-xl text-white mx-15 mt-7"
+              >
                 Login
               </button>
             )}
             <p className="text-white mx-15">
               -----------------------------or--------------------------
             </p>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                decodefn(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+            ;
             {insideRegister ? (
               <div>
                 <h1 className="text-center text-white">
