@@ -2,7 +2,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../services/allApi";
+import { loginUser, registerUser } from "../services/allApi";
 import { Flip, toast } from "react-toastify";
 
 
@@ -41,6 +41,35 @@ const navigate=useNavigate()
      toast.error('something went wrong')
     }
   };
+
+  const onLoginClick=async()=>{
+    try {
+    let reqBody={
+      email:userData.email,
+      password:userData.password
+
+    }
+
+    let apires=await loginUser(reqBody)
+    if(apires.status==200){
+      toast.success('Login Success')
+ 
+      localStorage.setItem('token',apires.data.token)
+      console.log(apires)
+
+      navigate('/')
+
+
+    }else{
+      toast.error(apires.response.data.message)
+    }
+
+      
+    } catch (error) {
+      toast.error('something went wrong')
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -99,7 +128,7 @@ const navigate=useNavigate()
                 register
               </button>
             ) : (
-              <button className="border-0 bg-green-700 w-75 p-2 rounded-xl text-white mx-15 mt-7">
+              <button onClick={onLoginClick} className="border-0 bg-green-700 w-75 p-2 rounded-xl text-white mx-15 mt-7">
                 Login
               </button>
             )}
