@@ -10,6 +10,7 @@ import Pnf from "./pages/Pnf";
 import { useState } from "react";
 import Loader from "./components/Loader";
 import { Flip, ToastContainer } from "react-toastify";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   const [showLoad, setShowLoad] = useState(false);
@@ -26,6 +27,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth insideRegister={true} />} />
+
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="/*" element={<Pnf />} />
       </Routes>
 
