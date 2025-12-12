@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FaEdit } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { addBook } from "../services/allApi";
 
 const UserProfile = () => {
 
@@ -45,6 +47,41 @@ const UserProfile = () => {
       uploadedImages:[],
       
   })
+
+  const onAddClick= async()=>{
+    try {
+      let token=localStorage.getItem('token')
+
+      let headers={
+
+        //multipart formdata used for file
+        'Content-Type':'multipart/form-data',
+        Authorization:`Bearer ${token}`
+      }
+
+      //form data is used to encode the file Uploading if the req files uploading we must  pass the req body as Form Data
+
+      let reqBody=new FormData()
+
+      for (const key in bookData) {
+        
+        if(key!='uploadedImages'){
+          reqBody.append(key,bookData[key])
+        }else{
+          bookData.uploadedImages.forEach((eachFile)=>{
+            reqBody.append('uploadedImages',eachFile)
+          })
+        }
+        
+      }
+      let apires=await addBook(reqBody,headers)
+      console.log(apires)
+      
+    } catch (error) {
+      console.log(error)
+      toast.error('something hapeened')
+    }
+  }
 
 
 
@@ -121,7 +158,7 @@ const UserProfile = () => {
     <input onChange={(e)=>setBookData({...bookData,imgUrl:e.target.value})} type="text" placeholder="imageUrl" className="w-100 text-black bg-white rounded-2xl p-1" />
 
     <input onChange={(e)=>setBookData({...bookData,price:e.target.value})} type="price" placeholder="number" className="w-100 text-black bg-white rounded-2xl p-1" />
-    <input onChange={(e)=>setBookData({...bookData,discountPrice:e.target.value})} type="text" placeholder="discount price" className="w-100 text-black bg-white rounded-2xl p-1" />
+    <input onChange={(e)=>setBookData({...bookData,discountPrice:e.target.value})} type="number" placeholder="discount price" className="w-100 text-black bg-white rounded-2xl p-1" />
     <textarea onChange={(e)=>setBookData({...bookData,abstract:e.target.value})} type="text" placeholder="abstract" className="w-100 text-black bg-white rounded-2xl p-1" />
 
 
@@ -161,11 +198,13 @@ const UserProfile = () => {
 
     
       }
+   
+
     </div>
   }
 
 
-
+ <button onClick={onAddClick} className="bg-blue-500"> add</button>
   </div>
  </div>
 

@@ -1,10 +1,11 @@
 import axios from "axios";
 
-  const axiosConfig=async(method,url,reqbody)=>{
+  const axiosConfig=async(method,url,reqbody,reqHeader)=>{
     let configObj={
         method:method,
         url:url,
-        data:reqbody
+        data:reqbody,
+      headers:reqHeader
     }
 
     return await axios(configObj).then((res)=>{
