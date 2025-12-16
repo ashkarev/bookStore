@@ -17,3 +17,8 @@ export const googleLoginApi=async(reqBody)=>{
 export const addBook=async(reqBody,reqHeader)=>{
     return await axiosConfig('post',`${baseUrl}/addBook`,reqBody,reqHeader)
 }
+
+
+export const getBook=async()=>{
+    return await axiosConfig('get',baseUrl+'/getSixBooks','')
+}

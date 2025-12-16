@@ -1,11 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearchengin } from '@fortawesome/free-brands-svg-icons/faSearchengin'
 import Footer from '../components/Footer'
+import { toast } from 'react-toastify'
+import { getBook } from '../services/allApi'
 
 
 const Home = () => {
+
+  const[bookData,setBookData]=useState([])
+  useEffect(()=>{
+getBookData()
+  },[])
+
+  const getBookData=async()=>{
+    try {
+
+      let apires=await getBook()
+      if(apires.status==200){
+    console.log(apires.data.limitedBookData)
+
+    setBookData(apires.data.limitedBookData)
+      }else{
+        console.log(apires.response.data.message)
+      }
+
+      
+    } catch (error) {
+      console.log(error)
+      toast.error('something wrong while getting data')
+    }
+  }
   return (
     <>
     <Header />
@@ -31,14 +57,28 @@ const Home = () => {
       <h1 className='text-2xl'>EXPLORE OUR LATEST COLLLECTIONS</h1>
     </div>
 
-<div className='flex justify-evenly'>
-   <div className='h-[350px] w-[220px] border-2 border-gray-100 rounded-2xl shadow-2xl shadow-gray-200 '>
+    {
+      bookData.length>0 &&
+      <div className='flex justify-evenly'>
+        {
+          bookData?.map((each)=>(
+  <div className='h-[350px] w-[220px] border-2 border-gray-100 rounded-2xl shadow-2xl shadow-gray-200 '>
       <img className='h-[250px] w-100 p-2' src="https://i.pinimg.com/736x/9f/47/b1/9f47b1b74e2b54063e07b99f430916c5.jpg" alt="" />
+      <h3 className='text-center'>name: {each.title}</h3>
 
     </div>
     
+    
   
+
+
+          ))
+        }
+    
 </div>
+
+ 
+}
 <div className='flex justify-center my-10'>
    <button className='border-2 p-2 rounded-2xl bg-blue-700 text-white hover:bg-white hover:text-blue-700 '>Explore More</button>
 
