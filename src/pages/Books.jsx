@@ -8,9 +8,11 @@ const Books = () => {
   const [isloggedIn, setIsLoggedIn] = useState(false);
   const [bookData, setBookData] = useState([]);
 
-const[duplicateBookData,setDuplicateBookData]=useState([])
+  const [duplicateBookData, setDuplicateBookData] = useState([]);
 
   const [categories, setCategories] = useState([]);
+
+  const[searchKey,setsearchKey]=useState('')
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -34,7 +36,7 @@ const[duplicateBookData,setDuplicateBookData]=useState([])
 
       let book = apires.data.BookData;
       setBookData(apires.data.BookData);
-      setDuplicateBookData(apires.data.BookData)
+      setDuplicateBookData(apires.data.BookData);
 
       let category = [];
 
@@ -50,12 +52,12 @@ const[duplicateBookData,setDuplicateBookData]=useState([])
     }
   };
 
-  const filterCategory=(category)=>{
-
-    let filteredData=duplicateBookData.filter((data)=>data.category==category)
-    setBookData(filteredData)
-    
-  }
+  const filterCategory = (category) => {
+    let filteredData = duplicateBookData.filter(
+      (data) => data.category == category
+    );
+    setBookData(filteredData);
+  };
 
   return (
     <>
@@ -67,6 +69,7 @@ const[duplicateBookData,setDuplicateBookData]=useState([])
 
           <div className="flex justify-center p-6">
             <input
+            onChange={(e)=>setsearchKey(e.target.value)}
               type="text"
               placeholder="Search By Title"
               className="border p-2 w-100"
@@ -78,28 +81,35 @@ const[duplicateBookData,setDuplicateBookData]=useState([])
 
           {/* MAIN GRID */}
           <div className="grid grid-cols-6 gap-6 mt-5 px-6">
-            
             {/* FILTER SECTION */}
-            <div  className="col-span-1">
+            <div className="col-span-1">
               <h1 className="text-3xl mb-5">Filters</h1>
+
+              <div onClick={getAllBookData}>
+                <input name="category" className="me-3" type="radio" />
+                <label className="flex items-center mb-3" htmlFor="">
+                  {" "}
+                  All
+                </label>
+              </div>
 
               {categories.length > 0 &&
                 categories.map((cat, index) => (
-                  <div onClick={()=>filterCategory(cat)}>
-                  <label
-                    key={index}
-                    htmlFor={index}
-                    className="flex items-center mb-3"
-                  >
-                    <input
-                      id={index}
-                      name="category"
-                      className="me-3"
-                      type="radio"
-
-                    />
-                    {cat}
-                  </label></div>
+                  <div onClick={() => filterCategory(cat)}>
+                    <label
+                      key={index}
+                      htmlFor={index}
+                      className="flex items-center mb-3"
+                    >
+                      <input
+                        id={index}
+                        name="category"
+                        className="me-3"
+                        type="radio"
+                      />
+                      {cat}
+                    </label>
+                  </div>
                 ))}
             </div>
 
