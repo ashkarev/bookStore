@@ -22,3 +22,7 @@ export const addBook=async(reqBody,reqHeader)=>{
 export const getBook=async()=>{
     return await axiosConfig('get',baseUrl+'/getSixBooks','')
 }
+
+export const getAllBooks=async(reqHeader)=>{
+    return await axiosConfig('get',baseUrl+'/getAllBooks','',reqHeader)
+}
