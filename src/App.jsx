@@ -11,6 +11,7 @@ import { useState } from "react";
 import Loader from "./components/Loader";
 import { Flip, ToastContainer } from "react-toastify";
 import UserProfile from "./pages/UserProfile";
+import SingleBook from "./pages/SingleBook";
 
 function App() {
   const [showLoad, setShowLoad] = useState(false);
@@ -29,6 +30,8 @@ function App() {
         <Route path="/register" element={<Auth insideRegister={true} />} />
 
         <Route path="/profile" element={<UserProfile />} />
+
+        <Route path="/view/:id/book" element={<SingleBook />} />
         <Route path="/*" element={<Pnf />} />
       </Routes>
 

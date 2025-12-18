@@ -23,6 +23,10 @@ export const getBook=async()=>{
     return await axiosConfig('get',baseUrl+'/getSixBooks','')
 }
 
-export const getAllBooks=async(reqHeader)=>{
-    return await axiosConfig('get',baseUrl+'/getAllBooks','',reqHeader)
+export const getAllBooks=async(reqHeader,searchKey)=>{
+    return await axiosConfig('get',`${baseUrl}/getAllBooks/?search=${searchKey}`,'',reqHeader)
+}
+
+export const getSingleBook=async(IdleDeadline,reqHeader)=>{
+    return await axiosConfig('get',`${baseUrl}/getSingleBook/${id}`,'',reqHeader)
 }

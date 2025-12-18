@@ -21,7 +21,7 @@ const Books = () => {
       setIsLoggedIn(true);
       getAllBookData();
     }
-  }, []);
+  }, [searchKey]);
 
   const getAllBookData = async () => {
     try {
@@ -31,7 +31,7 @@ const Books = () => {
         Authorization: `Bearer ${token}`,
       };
 
-      let apires = await getAllBooks(header);
+      let apires = await getAllBooks(header,searchKey);
       console.log(apires);
 
       let book = apires.data.BookData;
@@ -133,6 +133,8 @@ const Books = () => {
                       <p className="text-gray-700 text-base">
                         {eachBook.author}
                       </p>
+
+                      <Link to={`/view/${eachBook._id}/book`} className="text-blue-500">View More</Link>
                     </div>
                   </div>
                 ))
