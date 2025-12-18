@@ -63,7 +63,7 @@ getBookData()
         {
           bookData?.map((each)=>(
   <div className='h-[350px] w-[220px] border-2 border-gray-100 rounded-2xl shadow-2xl shadow-gray-200 '>
-      <img className='h-[250px] w-100 p-2' src="https://i.pinimg.com/736x/9f/47/b1/9f47b1b74e2b54063e07b99f430916c5.jpg" alt="" />
+      <img className='h-[250px] w-100 p-2' src={each.imgUrl} alt="" />
       <h3 className='text-center'>name: {each.title}</h3>
 
     </div>

@@ -27,6 +27,6 @@ export const getAllBooks=async(reqHeader,searchKey)=>{
     return await axiosConfig('get',`${baseUrl}/getAllBooks/?search=${searchKey}`,'',reqHeader)
 }
 
-export const getSingleBook=async(IdleDeadline,reqHeader)=>{
+export const getSingleBook=async(id,reqHeader)=>{
     return await axiosConfig('get',`${baseUrl}/getSingleBook/${id}`,'',reqHeader)
 }

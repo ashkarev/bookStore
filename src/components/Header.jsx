@@ -1,10 +1,29 @@
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Dropdown, DropdownItem } from "flowbite-react";
 
 
 const Header = () => {
+
+  const[isLoggedIn,setIsLoggedIn]=useState(false)
+  const navigate=useNavigate()
+
+useEffect(()=>{
+  let token=localStorage.getItem('token')
+  if(token){
+      setIsLoggedIn(true)
+  }
+},[])
+
+
+const onLoggedOut=()=>{
+  localStorage.clear()
+  navigate('/')
+  
+}
+
   return (
     <>
      <div className='flex justify-between items-center my-4'>
@@ -12,15 +31,32 @@ const Header = () => {
         
         <h1 className='text-3xl font-bold'>Book mania</h1>
 
-        <div className=''>
-            <span> {<FontAwesomeIcon icon={faInstagram} />}   </span>
+        <div className='flex items-center gap-3'>
+            <span > {<FontAwesomeIcon icon={faInstagram} />}   </span>
             <span> {<FontAwesomeIcon icon={faTwitter} />}   </span>
 
             <span> {<FontAwesomeIcon icon={faFacebook} />}   </span>
-<Link to={'/login'}>
-            <button className='border-0 rounded-3xl  p-2 hover:bg-emerald-400  hover:text-white'>Login</button>
+
+            {
+              
+              isLoggedIn? <Dropdown className='text-black ' label={
+                <div>
+                  <img className='w-9' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4YreOWfDX3kK-QLAbAL4ufCPc84ol2MA8Xg&s" alt="" />
+                </div>
+              } dismissOnClick={false}>
+      <Link to={'/profile'} className='p-2'>profile</Link>
+     
+      <button onClick={onLoggedOut} className='p-2'>Log out</button>
+    </Dropdown>
+              :
+                <Link to={'/login'}>
+              
+                  <button  className='border-0 rounded-3xl  p-2 hover:bg-emerald-400  hover:text-white'>Login</button>
 
 </Link>
+            }
+
+      
 
         </div>
      </div>
