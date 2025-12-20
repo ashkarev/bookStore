@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { FaEdit } from "react-icons/fa";
+
 import { FaCheckCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { addBook } from "../services/allApi";
+import EditProfile from "../components/EditProfile";
 
 const UserProfile = () => {
 
   const[sellBookFlag,setSellBookFlag]=useState(true)
   const[bookStatusFlag,setBookStatusFlag]=useState(false)
   const [purchaseFlag,setPurchaseFlag]=useState(false)
+
+
 
 
   const[preview,setPreview]=useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg_ri9E8XxXRafeIMA4QGosabTMk_wP7pTDQ&s')
@@ -102,10 +105,14 @@ const UserProfile = () => {
             <h1 className="text-3xl flex">
               Jam <FaCheckCircle className="m-1 text-xl my-3 text-blue-500" />
             </h1>
-            <button className="text-blue-500 border rounded-xl border-blue-500 p-3 flex text-lg">
-              {" "}
-              <FaEdit className="m-1" /> Edit
-            </button>
+           
+
+           <EditProfile />
+
+
+   
+
+
           </div>
           <p>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.
