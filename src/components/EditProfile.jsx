@@ -1,57 +1,180 @@
-import React, { useState } from 'react'
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "flowbite-react";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { updateUserProfile } from "../services/allApi";
 
-const EditProfile = () => {
-const [openModal, setOpenModal] = useState(false);
+const EditProfile = ({ userDetails }) => {
+  const [openModal, setOpenModal] = useState(false);
 
-const [preview,setPreview]=useState("https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80")
+  const [editData, setEditData] = useState({
+    userName: "",
+    password: "",
+    confirmPassword: "",
+    bioDescription: "",
+    proPic: "",
+  });
 
-const onImageChange=(e)=>{
-console.log(e.target.files[0])  //image stord in here
+  useEffect(() => {
+    setEditData(userDetails);
+  }, [userDetails]);
 
-//img uploading
+  const [preview, setPreview] = useState(
+    "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80"
+  );
 
+  const onImageChange = (e) => {
+    console.log(e.target.files[0]); //image stord in here
 
-let url= URL.createObjectURL(e.target.files[0])
-console.log(url)
-setPreview(url)
-}
+    //img uploading
+
+    let url = URL.createObjectURL(e.target.files[0]);
+
+    setEditData({ ...editData, proPic: e.target.files[0] });
+    console.log(url);
+    setPreview(url);
+  };
+
+  const onEditClick = async () => {
+    try {
+      //first check the fields are enpty or not
+      if (
+        editData.userName == "" ||
+        editData.password == "" ||
+        editData.bioDescription == "" ||
+        editData.proPic == "" ||
+        editData.confirmPassword == ""
+      ) {
+        toast.error("pls fill the form");
+      } else {
+        if (editData.confirmPassword == editData.password) {
+          //proceed with api
+
+          let token = localStorage.getItem("token");
+
+          let header = {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          };
+
+          let reqBody = new FormData();
+
+          for (let key in editData) {
+            reqBody.append(key, editData[key]);
+          }
+          let apires = await updateUserProfile(editData._id, reqBody, header);
+          if (apires.status == 200) {
+            toast.success(apires.data.message);
+            console.log(apires);
+          } else {
+            toast.error(apires.response.data.message);
+            console.log(apires);
+          }
+        } else {
+          toast.error("both passwrods are incorrect");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("somethinf wrng hai whhile update");
+    }
+  };
 
   return (
     <>
+      <button
+        onClick={() => setOpenModal(true)}
+        className="text-blue-500 border rounded-xl border-blue-500 p-3 flex text-lg"
+      >
+        {" "}
+        <FaEdit className="m-1" /> Edit
+      </button>
 
-     <button onClick={() => setOpenModal(true)} className="text-blue-500 border rounded-xl border-blue-500 p-3 flex text-lg">
+      <Modal
+        className="mx-60 "
+        show={openModal}
+        onClose={() => setOpenModal(false)}
+      >
+        <ModalHeader className="bg-gray-500 text-3xl text-white p-2 ">
+          Uploaded Images
+        </ModalHeader>
+        <ModalBody className="bg-gray-600">
+          <div className="space-y-6 flex flex-col items-center  ">
+            <label htmlFor="imp">
+              <input
+                onChange={(e) => onImageChange(e)}
+                type="file"
+                name=""
+                id="imp"
+              />
+              <img className="w-50" src={preview} alt="" />
+            </label>
+
+            <input
+              onChange={(e) => {
+                setEditData({ ...editData, userName: e.target.value });
+              }}
+              value={editData.userName}
+              className="border p-2 bg-white w-100 "
+              type="text"
+              placeholder="enter name "
+            />
+            <input
+              onChange={(e) => {
+                setEditData({ ...editData, password: e.target.value });
+              }}
+              value={editData.password}
+              className="border p-2 bg-white w-100 "
+              type="text"
+              placeholder="enter passwrod"
+            />
+            <input
+              onChange={(e) => {
+                setEditData({ ...editData, confirmPassword: e.target.value });
+              }}
+              value={editData.confirmPassword}
+              className="border p-2 bg-white w-100  "
+              type="text"
+              placeholder="confirm password"
+            />
+            <textarea
+              onChange={(e) => {
+                setEditData({ ...editData, bioDescription: e.target.value });
+              }}
+              value={editData.bioDescription}
+              className="border p-2 bg-white w-100 "
+              name=""
+              id="one"
+              placeholder="bio"
+            >
               {" "}
-              <FaEdit className="m-1" /> Edit
-            </button>
+            </textarea>
+          </div>
+        </ModalBody>
+        <ModalFooter className="bg-gray-400">
+          <Button
+            className="mx-3 p-2 rounded-2xl bg-red-600 text-white text-2xl"
+            onClick={() => setOpenModal(false)}
+          >
+            Close
+          </Button>
 
-       <Modal className="mx-60 " show={openModal} onClose={() => setOpenModal(false)}>
-             <ModalHeader className="bg-gray-500 text-3xl text-white p-2 ">Uploaded Images</ModalHeader>
-             <ModalBody className="bg-gray-600">
-               <div className="space-y-6 flex flex-col items-center  ">
-
-                <label htmlFor="imp">
-                    <input onChange={(e)=>onImageChange(e)} type="file" name='' id='imp' />
-                    <img className='w-50' src={preview} alt="" />
-                </label>
-               
-                <input className="border p-2 bg-white w-100 " type="text" placeholder="enter name " />
-                <input  className="border p-2 bg-white w-100 " type="text" placeholder="enter passwrod" />
-                <input className="border p-2 bg-white w-100  " type="text" placeholder="confirm password" />
-                <textarea className="border p-2 bg-white w-100 " name="" id="one" placeholder="bio"> </textarea>
-               </div>
-             </ModalBody>
-             <ModalFooter className="bg-gray-400">
-               
-               <Button className="mx-3 p-2 rounded-2xl bg-red-600 text-white text-2xl"  onClick={() => setOpenModal(false)}>
-               Close
-               </Button>
-             </ModalFooter>
-           </Modal>
-      
+          <button
+            onClick={onEditClick}
+            className="mx-3 p-2 rounded-2xl bg-green-600 text-white text-2xl"
+          >
+            submit
+          </button>
+        </ModalFooter>
+      </Modal>
     </>
-  )
-}
+  );
+};
 
-export default EditProfile
+export default EditProfile;
