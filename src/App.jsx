@@ -12,6 +12,7 @@ import Loader from "./components/Loader";
 import { Flip, ToastContainer } from "react-toastify";
 import UserProfile from "./pages/UserProfile";
 import SingleBook from "./pages/SingleBook";
+import AdminHome from "./Admin/Pages/AdminHome";
 
 function App() {
   const [showLoad, setShowLoad] = useState(false);
@@ -32,6 +33,9 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
 
         <Route path="/view/:id/book" element={<SingleBook />} />
+
+        <Route path="/admin"  element={<AdminHome />}/>
+
         <Route path="/*" element={<Pnf />} />
       </Routes>
 

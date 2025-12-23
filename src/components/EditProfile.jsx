@@ -69,6 +69,7 @@ const EditProfile = ({ userDetails }) => {
             reqBody.append(key, editData[key]);
           }
           let apires = await updateUserProfile(editData._id, reqBody, header);
+          console.log(apires)
           if (apires.status == 200) {
             toast.success(apires.data.message);
             console.log(apires);

@@ -50,13 +50,20 @@ const Auth = ({ insideRegister }) => {
       };
 
       let apires = await loginUser(reqBody);
+
       if (apires.status == 200) {
         toast.success("Login Success");
-
         localStorage.setItem("token", apires.data.token);
         console.log(apires);
 
-        navigate("/");
+        //check is user admin ocuured redirect
+        if (apires.data.existingUser.userType == "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+
+       
       } else {
         toast.error(apires.response.data.message);
       }
@@ -66,29 +73,28 @@ const Auth = ({ insideRegister }) => {
     }
   };
 
-  const decodefn=async(credentials)=>{
-    console.log(credentials)
+  const decodefn = async (credentials) => {
+    console.log(credentials);
 
-    let decodedata=jwtDecode(credentials.credential)
-    console.log(decodedata)
+    let decodedata = jwtDecode(credentials.credential);
+    console.log(decodedata);
 
-    let payload={
-      userName:decodedata.name,
-      email:decodedata.email,
-      proPic:decodedata.picture
+    let payload = {
+      userName: decodedata.name,
+      email: decodedata.email,
+      proPic: decodedata.picture,
+    };
+    let apires = await googleLoginApi(payload);
+    console.log(apires);
+
+    if (apires.status == 200 || apires.status == 201) {
+      toast.success(apires.data.message);
+      localStorage.setItem("token", apires.data.token);
+      navigate("/");
+    } else {
+      toast.error(apires.response.data.message);
     }
-    let apires=await googleLoginApi(payload)
-    console.log(apires)
-
-    if(apires.status==200 || apires.status==201){
-      toast.success(apires.data.message)
-      localStorage.setItem('token',apires.data.token)
-      navigate('/')
-    }else{
-      toast.error(apires.response.data.message)
-    }
-
-  }
+  };
 
   return (
     <>
