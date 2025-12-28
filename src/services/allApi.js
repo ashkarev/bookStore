@@ -39,3 +39,7 @@ export const getUserDetails=async(reqHeader)=>{
 export const updateUserProfile=async(id,reqBody,reqheader)=>{
     return await axiosConfig('patch',`${baseUrl}/${id}/updateProfile`,reqBody,reqheader)
 }
+
+export const getAllUsers=async(reqHeader)=>{
+    return await axiosConfig('get',`${baseUrl}/AllUsers`,'',reqHeader)
+}

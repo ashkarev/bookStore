@@ -1,8 +1,8 @@
 import React from 'react'
-import AdminNav from '../Components/AdminNav'
-import AdminSideBar from '../Components/AdminSideBar'
+import AdminNav from './AdminNav'
+import AdminSideBar from './AdminSideBar'
 
-const AdminHome = () => {
+const AdminSettings = () => {
   return (
     <>
 
@@ -10,7 +10,7 @@ const AdminHome = () => {
     <div className='grid grid-cols-[3fr_9fr]'>
     <AdminSideBar />
     <div>
-      Home contents
+      Setting 
     </div>
 
     </div>
@@ -18,4 +18,4 @@ const AdminHome = () => {
   )
 }
 
-export default AdminHome
+export default AdminSettings

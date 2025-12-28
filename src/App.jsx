@@ -13,6 +13,9 @@ import { Flip, ToastContainer } from "react-toastify";
 import UserProfile from "./pages/UserProfile";
 import SingleBook from "./pages/SingleBook";
 import AdminHome from "./Admin/Pages/AdminHome";
+import AdminCareers from "./Admin/Components/AdminCareers";
+import AdminBooks from "./Admin/Components/AdminBooks";
+import AdminSettings from "./Admin/Components/AdminSettings";
 
 function App() {
   const [showLoad, setShowLoad] = useState(false);
@@ -35,6 +38,9 @@ function App() {
         <Route path="/view/:id/book" element={<SingleBook />} />
 
         <Route path="/admin"  element={<AdminHome />}/>
+        <Route path="/admin-careers" element={<AdminCareers />} />
+        <Route path="/admin-books" element={<AdminBooks />} />
+        <Route path="/admin-settings" element={<AdminSettings />} />
 
         <Route path="/*" element={<Pnf />} />
       </Routes>
