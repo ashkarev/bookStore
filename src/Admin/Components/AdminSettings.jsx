@@ -3,6 +3,7 @@ import AdminNav from './AdminNav'
 import AdminSideBar from './AdminSideBar'
 
 const AdminSettings = () => {
+  
   return (
     <>
 
