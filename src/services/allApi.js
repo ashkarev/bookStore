@@ -43,3 +43,7 @@ export const updateUserProfile=async(id,reqBody,reqheader)=>{
 export const getAllUsers=async(reqHeader)=>{
     return await axiosConfig('get',`${baseUrl}/AllUsers`,'',reqHeader)
 }
+
+export const addJob=async(reqBody,reqHeader)=>{
+    return await axiosConfig('post',`${baseUrl}/addJob`,reqBody,reqHeader)
+}
