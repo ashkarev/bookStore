@@ -209,7 +209,7 @@ const AdminCareers = () => {
               </div>
             )}
 
-            {showapp && <div>app</div>}
+            {showapp && <div>app details</div>}
           </div>
         </div>
       </div>
