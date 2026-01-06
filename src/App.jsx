@@ -16,6 +16,7 @@ import AdminHome from "./Admin/Pages/AdminHome";
 import AdminCareers from "./Admin/Components/AdminCareers";
 import AdminBooks from "./Admin/Components/AdminBooks";
 import AdminSettings from "./Admin/Components/AdminSettings";
+import Career from "./pages/Career";
 
 function App() {
   const [showLoad, setShowLoad] = useState(false);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/admin-careers" element={<AdminCareers />} />
         <Route path="/admin-books" element={<AdminBooks />} />
         <Route path="/admin-settings" element={<AdminSettings />} />
+        <Route path="/career" element={<Career />} />
 
         <Route path="/*" element={<Pnf />} />
       </Routes>

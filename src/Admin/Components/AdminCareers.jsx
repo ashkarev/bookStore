@@ -3,21 +3,25 @@ import AdminNav from "./AdminNav";
 import AdminSideBar from "./AdminSideBar";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
+
 import {
   Button,
+  Card,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
 } from "flowbite-react";
 import { toast } from "react-toastify";
-import { addJob } from "../../services/allApi";
+import { addJob, deleteJob, getAllJobs } from "../../services/allApi";
 
 const AdminCareers = () => {
   const [showjobs, setShowjobs] = useState(true);
   const [showapp, setShowApp] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+  const [jobData, setJobData] = useState([]);
 
   const [jobInputData, setJobInputData] = useState({
     jobId: "",
@@ -30,7 +34,7 @@ const AdminCareers = () => {
   });
 
   useEffect(() => {
-    addJob();
+    onAllJobs();
   }, []);
 
   const onAddJob = async () => {
@@ -39,9 +43,11 @@ const AdminCareers = () => {
       let header = {
         Authorization: `Bearer ${token}`,
       };
+      // console.log(header)
       let apires = await addJob(jobInputData, header);
       if (apires.status == 201) {
         toast.success("successfully added");
+        onAllJobs()
       } else {
         toast.error(apires.response.data.message);
       }
@@ -51,6 +57,49 @@ const AdminCareers = () => {
       toast.error("some wrong while add");
     }
   };
+
+  const onAllJobs = async () => {
+    try {
+      let apires = await getAllJobs();
+      console.log(apires.data.allJobs);
+      if (apires.status == 200) {
+        setJobData(apires.data.allJobs);
+      } else {
+        toast.error("error occured");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong getting job datas");
+    }
+  };
+
+
+
+  const onDeleteJob=async(id)=>{
+    try {
+
+      let token=localStorage.getItem('token')
+
+      let header={
+        Authorization:`Bearer ${token}`
+      }
+
+      let apires=await deleteJob(id,header)
+
+      if(apires.status==200
+      ){
+        toast.success('successfully deleted')
+        onAllJobs()
+      }
+      else{
+        toast.error(apires.response.data.message)
+      }
+    } catch (error) {
+         console.log(error);
+      toast.error("something went wrong when deleting");
+      
+    }
+  }
 
   return (
     <>
@@ -96,6 +145,34 @@ const AdminCareers = () => {
                 >
                   Add New Job
                 </button>
+
+                {jobData?.length > 0 ? (
+                  jobData.map((eachjob, index) => (
+                    <div className="">
+                      <Card href="#" className="max-w-sm">
+                      <h5 className="   ">
+                      Job Id:  {eachjob._id}  |
+                      job Role : {eachjob.jobRole}  |
+                      Salary :{eachjob.salary} |
+                      experience:{eachjob.experience} |
+                      </h5>
+                      <p className="font-normal text-gray-700 dark:text-gray-400">
+                      {eachjob.jobDesc}
+
+                      <br />
+                      {eachjob.jobDate}
+                      {eachjob.lastDate}
+
+                      </p>
+
+                      <button onClick={()=>{onDeleteJob(eachjob._id)}} className="border-0  rounded-xl bg-red-600 p-3 text-white hover:bg-red-400 mx-10" >delete Job</button>
+                    </Card>
+                    </div>
+                  ))
+                ) : (
+                  <h1>no jobs added</h1>
+                )}
+
                 <Modal
                   className=" mx-120 "
                   show={openModal}

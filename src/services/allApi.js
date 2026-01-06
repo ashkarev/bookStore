@@ -47,3 +47,11 @@ export const getAllUsers=async(reqHeader)=>{
 export const addJob=async(reqBody,reqHeader)=>{
     return await axiosConfig('post',`${baseUrl}/addJob`,reqBody,reqHeader)
 }
+
+export const getAllJobs=async()=>{
+    return await axiosConfig('get',`${baseUrl}/getAllJobs`,'')
+}
+
+export const deleteJob=async(id,reqHeader)=>{
+    return await axiosConfig('delete',`${baseUrl}/${id}/deleteJob`,{},reqHeader)
+}
