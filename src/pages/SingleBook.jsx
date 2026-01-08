@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { data, Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { getSingleBook } from "../services/allApi";
@@ -10,8 +10,11 @@ import {
   ModalHeader,
 } from "flowbite-react";
 import { baseUrl } from "../services/baseUrl";
+import { authContext } from "../context/AuthContext";
 
 const SingleBook = () => {
+
+  const {token}=useContext(authContext)
   const [bookData, setBookData] = useState({});
   const [openModal, setOpenModal] = useState(false);
 
@@ -21,7 +24,7 @@ const SingleBook = () => {
 
   const singleBook = async () => {
     try {
-      let token = localStorage.getItem("token");
+      // let token = localStorage.getItem("token");
 
       let header = {
         Authorization: `Bearer ${token}`,

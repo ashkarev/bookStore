@@ -1,11 +1,14 @@
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Dropdown, DropdownItem } from "flowbite-react";
+import { authContext } from '../context/AuthContext';
 
 
 const Header = () => {
+
+  const {removeToken}=useContext(authContext)
 
   const[isLoggedIn,setIsLoggedIn]=useState(false)
   const navigate=useNavigate()
@@ -19,7 +22,8 @@ useEffect(()=>{
 
 
 const onLoggedOut=()=>{
-  localStorage.clear()
+  // localStorage.clear()
+  removeToken()
   navigate('/')
   
 }

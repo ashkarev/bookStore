@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -6,8 +6,12 @@ import { FaCheckCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { addBook, getUserDetails } from "../services/allApi";
 import EditProfile from "../components/EditProfile";
+import { authContext } from "../context/AuthContext";
 
 const UserProfile = () => {
+
+const {token}=useContext(authContext)
+
   const [sellBookFlag, setSellBookFlag] = useState(true);
   const [bookStatusFlag, setBookStatusFlag] = useState(false);
   const [purchaseFlag, setPurchaseFlag] = useState(false);
@@ -59,7 +63,7 @@ const UserProfile = () => {
 
   const onAddClick = async () => {
     try {
-      let token = localStorage.getItem("token");
+      // let token = localStorage.getItem("token");
 
       let headers = {
         //multipart formdata used for file
@@ -92,7 +96,7 @@ const UserProfile = () => {
   const getUserData=async()=>{
     try {
 
-      let token=localStorage.getItem('token')
+      // let token=localStorage.getItem('token')
 
       let header={
         Authorization:`Bearer ${token}`

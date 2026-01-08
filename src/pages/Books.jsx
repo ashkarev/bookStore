@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { getAllBooks } from "../services/allApi";
 import Footer from "../components/Footer";
+import { authContext } from "../context/AuthContext";
 
 const Books = () => {
+  const { token } = useContext(authContext);
+  console.log(token);
+  
   const [isloggedIn, setIsLoggedIn] = useState(false);
   const [bookData, setBookData] = useState([]);
 
@@ -12,10 +16,10 @@ const Books = () => {
 
   const [categories, setCategories] = useState([]);
 
-  const[searchKey,setsearchKey]=useState('')
+  const [searchKey, setsearchKey] = useState("");
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
+    // let token = localStorage.getItem("token");
 
     if (token) {
       setIsLoggedIn(true);
@@ -25,13 +29,13 @@ const Books = () => {
 
   const getAllBookData = async () => {
     try {
-      let token = localStorage.getItem("token");
+      // let token = localStorage.getItem("token");
 
       let header = {
         Authorization: `Bearer ${token}`,
       };
 
-      let apires = await getAllBooks(header,searchKey);
+      let apires = await getAllBooks(header, searchKey);
       console.log(apires);
 
       let book = apires.data.BookData;
@@ -69,7 +73,7 @@ const Books = () => {
 
           <div className="flex justify-center p-6">
             <input
-            onChange={(e)=>setsearchKey(e.target.value)}
+              onChange={(e) => setsearchKey(e.target.value)}
               type="text"
               placeholder="Search By Title"
               className="border p-2 w-100"
@@ -134,7 +138,12 @@ const Books = () => {
                         {eachBook.author}
                       </p>
 
-                      <Link to={`/view/${eachBook._id}/book`} className="text-blue-500">View More</Link>
+                      <Link
+                        to={`/view/${eachBook._id}/book`}
+                        className="text-blue-500"
+                      >
+                        View More
+                      </Link>
                     </div>
                   </div>
                 ))

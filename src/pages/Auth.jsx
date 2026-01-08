@@ -1,13 +1,18 @@
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { googleLoginApi, loginUser, registerUser } from "../services/allApi";
 import { Flip, toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { authContext } from "../context/AuthContext";
 
 const Auth = ({ insideRegister }) => {
+
+  const {saveToken}=useContext(authContext)
+
+
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
@@ -53,7 +58,8 @@ const Auth = ({ insideRegister }) => {
 
       if (apires.status == 200) {
         toast.success("Login Success");
-        localStorage.setItem("token", apires.data.token);
+        // localStorage.setItem("token", apires.data.token);
+        saveToken(apires.data.token)
         console.log(apires);
 
         //check is user admin ocuured redirect
@@ -89,7 +95,9 @@ const Auth = ({ insideRegister }) => {
 
     if (apires.status == 200 || apires.status == 201) {
       toast.success(apires.data.message);
-      localStorage.setItem("token", apires.data.token);
+      // localStorage.setItem("token", apires.data.token);
+        saveToken(apires.data.token)
+
       navigate("/");
     } else {
       toast.error(apires.response.data.message);
