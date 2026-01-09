@@ -1,13 +1,110 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdminNav from './AdminNav'
 import AdminSideBar from './AdminSideBar'
 import { Card } from "flowbite-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaBook } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { getAllApplication, getAllBooks, getAllJobs, getAllUsers } from '../../services/allApi';
+import { authContext } from '../../context/AuthContext';
 
 const AdminSettings = () => {
+
+  useEffect(()=>{
+allBook()
+allUsers()
+allJobs()
+allApp()
+  },[])
+
+  const {token}=useContext(authContext)
+
+  const[bookData,setBookData]=useState({})
+  const[userData,setUserData]=useState({})
+  const[totalOpenings,setTotalOpenings]=useState({})
+  const[totalApplication,setTotalApplication]=useState({})
+
+    const [searchKey, setsearchKey] = useState("");
+  
+
+  const allBook=async()=>{
+    try {
+      let header={
+        Authorization:`Bearer ${token}`
+      }
+      let apires=await getAllBooks(header,searchKey)
+      // console.log(apires)
+      if(apires.status==200){
+        setBookData(apires.data.BookData)
+        // console.log(apires.data.BookData)
+        
+      }
+     
+      
+    } catch (error) {
+      console.log(error)
+      toast.error('failed')
+    }
+  }
+
+  const allUsers=async()=>{
+    try {
+      let header={
+        Authorization:`Bearer ${token}`
+      }
+
+      let apires=await getAllUsers(header)
+      // console.log(apires.data)
+      if(apires.status==200){
+        setUserData(apires.data.allUsers)
+      }
+      
+    } catch (error) {
+            console.log(error)
+      toast.error('failed')
+    }
+  }
+
+
+  const allJobs=async()=>{
+    try {
+
+      let apires=await getAllJobs()
+      console.log(apires)
+      setTotalOpenings(apires.data.allJobs)
+      
+      
+    } catch (error) {
+            console.log(error)
+      toast.error('failed')
+    }
+  }
+
+
+  const allApp=async()=>{
+      try {
+      let header={
+        Authorization:`Bearer ${token}`
+      }
+
+      let apires=await getAllApplication(header)
+      // console.log(apires.data)
+      if(apires.status==200){
+        console.log(apires.data)
+        setTotalApplication(apires.data)
+      }
+      
+    } catch (error) {
+            console.log(error)
+      toast.error('failed')
+    }
+
+  }
   
   return (
+
+
+   
     <>
 
     <AdminNav />
@@ -19,43 +116,55 @@ const AdminSettings = () => {
       <h5 className="text-2xl font-bold text-blue-500 text-center">
       TOTAL BOOKS
       </h5>
-      <p className="font-normal text-white text-center">
-        <div className='flex justify-center text-white'>
-        <FaBook className='text-2xl '/>
-
-        </div>
+      <p className="font-normal text-white text-center ">
         
-        Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+        {/* <FaBook className='text-2xl '/> */}
+
+       
+        
+        <div className='text-5xl'>
+          {
+            bookData.length
+          }
+        </div>
+      
       </p>
     </Card>
       </div>
       <div className=''>
-         <Card href="#" className="max-w-sm">
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Noteworthy technology acquisitions 2021
+         <Card href="#" className="max-w-sm bg-sky-50 rounded-2xl shadow-lg shadow-sky-500 hover:scale-105 duration-120">
+      <h5  className="text-2xl font-bold text-blue-500 text-center">
+      TOTAL USERS
       </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
-        Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+      <p className="font-bold text-5xl text-center text-white">
+        <div>
+          {
+            userData.length
+          }
+        </div>
       </p>
     </Card>
       </div>
       <div className=''>
-         <Card href="#" className="max-w-sm">
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Noteworthy technology acquisitions 2021
+         <Card href="#" className="max-w-sm bg-sky-50 rounded-2xl shadow-lg shadow-sky-500 hover:scale-105 duration-120">
+      <h5 className="text-2xl font-bold text-blue-500 text-center">
+       TOTAL OPENINGS
       </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
-        Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+      <p className="font-bold text-5xl text-center text-white">
+        {
+          totalOpenings.length
+      }
       </p>
     </Card>
       </div>
       <div className=''>
-         <Card href="#" className="max-w-sm">
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Noteworthy technology acquisitions 2021
+         <Card href="#" className="max-w-sm bg-sky-50 rounded-2xl shadow-lg shadow-sky-500 hover:scale-105 duration-120">
+      <h5 className="text-2xl font-bold text-blue-500 text-center">
+      TOTAL APPLICATION
       </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
-        Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+      <p className="font-bold text-5xl text-center text-white">
+{
+totalApplication.length}
       </p>
     </Card>
       </div>
