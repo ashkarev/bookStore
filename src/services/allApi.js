@@ -59,3 +59,7 @@ export const deleteJob=async(id,reqHeader)=>{
 export const applyJob=async(reqBody,reqHeader)=>{
     return await axiosConfig('post',`${baseUrl}/applyJob`,reqBody,reqHeader)
 }
+
+export const getAllApplication=async(reqHeader)=>{
+    return await axiosConfig('get',`${baseUrl}/getAllApplication`,"",reqHeader)
+}

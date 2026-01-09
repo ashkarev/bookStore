@@ -4,6 +4,7 @@ import AdminSideBar from "./AdminSideBar";
 import { toast } from "react-toastify";
 import { getAllBooks, getAllUsers } from "../../services/allApi";
 import { baseUrl } from "../../services/baseUrl";
+import AdminSettings from "./AdminSettings";
 const AdminBooks = () => {
   const [showBook, setShowBook] = useState(true);
   const [showUser, setShowUser] = useState(false);
@@ -164,6 +165,7 @@ getAllUserData()
             </div>}
         </div>
       </div>
+     
     </>
   );
 };

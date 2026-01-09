@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdminNav from "./AdminNav";
 import AdminSideBar from "./AdminSideBar";
 import { faL } from "@fortawesome/free-solid-svg-icons";
@@ -13,9 +13,15 @@ import {
   ModalHeader,
 } from "flowbite-react";
 import { toast } from "react-toastify";
-import { addJob, deleteJob, getAllJobs } from "../../services/allApi";
+import { addJob, deleteJob, getAllApplication, getAllJobs } from "../../services/allApi";
+import { authContext } from "../../context/AuthContext";
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { baseUrl } from "../../services/baseUrl";
 
 const AdminCareers = () => {
+
+const {token}=useContext(authContext)
+
   const [showjobs, setShowjobs] = useState(true);
   const [showapp, setShowApp] = useState(false);
 
@@ -33,8 +39,11 @@ const AdminCareers = () => {
     experience: "",
   });
 
+  const[applyData,setApplyData]=useState({})
+
   useEffect(() => {
     onAllJobs();
+    getApplyData()
   }, []);
 
   const onAddJob = async () => {
@@ -98,6 +107,27 @@ const AdminCareers = () => {
          console.log(error);
       toast.error("something went wrong when deleting");
       
+    }
+  }
+
+  const getApplyData=async()=>{
+    try {
+      let header={
+        Authorization:`Bearer ${token}`
+      }
+      let apires=await getAllApplication(header)
+      console.log(apires)
+      if(apires.status==200){
+    setApplyData(apires.data)
+        
+
+      }else{
+        toast.error(apires.response.data.message)
+      }
+      
+    } catch (error) {
+        console.log(error);
+      toast.error("something went wrong while fetching applications");
     }
   }
 
@@ -286,7 +316,69 @@ const AdminCareers = () => {
               </div>
             )}
 
-            {showapp && <div>app details</div>}
+            {showapp && (
+              <div>
+                {
+                  applyData.length>0?(
+                         <div>
+                           <Table className="my-10   ">
+        <TableHead className="bg-sky-50 p-3">
+          <TableRow className="p-3 ">
+            <TableHeadCell>JobID</TableHeadCell>
+            <TableHeadCell>Job Title</TableHeadCell>
+            <TableHeadCell>Email</TableHeadCell>
+
+
+            <TableHeadCell>Full NAme</TableHeadCell>
+            <TableHeadCell>phone</TableHeadCell>
+            <TableHeadCell>resume</TableHeadCell>
+            <TableHeadCell>Action</TableHeadCell>
+
+
+
+           
+          </TableRow>
+        </TableHead>
+        <TableBody className="divide-y bg-sky-300 text-white">
+
+          {
+            applyData.map((eachData,index)=>(
+               <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+             {
+             eachData._id}
+            </TableCell>
+            <TableCell>{eachData.jobTitle}</TableCell>
+            <TableCell>{eachData.email}</TableCell>
+            <TableCell>{eachData.fullName}</TableCell>
+            <TableCell>{eachData.phone}</TableCell>
+
+            <TableCell>{eachData.resume}</TableCell>
+
+            <TableCell>
+              <a href={`${baseUrl}/uploads/${eachData.resume}`} className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+               Download Resume
+              </a>
+            </TableCell>
+          </TableRow>
+        
+            ))
+          }
+         
+         
+        
+        </TableBody>
+      </Table>
+      
+                         </div>
+                  ):(
+                    <h1>no applications</h1>
+
+                  )
+                }
+              
+              </div>
+            )}
           </div>
         </div>
       </div>
