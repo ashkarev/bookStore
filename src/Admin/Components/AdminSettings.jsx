@@ -160,7 +160,7 @@ allApp()
       <div className=''>
          <Card href="#" className="max-w-sm bg-sky-50 rounded-2xl shadow-lg shadow-sky-500 hover:scale-105 duration-120">
       <h5 className="text-2xl font-bold text-blue-500 text-center">
-      TOTAL APPLICATION
+      TOTAL APPLICATIONS
       </h5>
       <p className="font-bold text-5xl text-center text-white">
 {
