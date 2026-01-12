@@ -12,6 +12,10 @@ import {
 import { baseUrl } from "../services/baseUrl";
 import { authContext } from "../context/AuthContext";
 
+
+import {loadStripe} from '@stripe/stripe-js';
+import { toast } from "react-toastify";
+
 const SingleBook = () => {
 
   const {token}=useContext(authContext)
@@ -21,6 +25,20 @@ const SingleBook = () => {
   useEffect(() => {
     singleBook();
   }, []);
+
+  //Stripe
+  const onBuyClick=async()=>{
+    try {
+
+      const stripe=await loadStripe('pk_test_51SocgH5ryYIXAp2yuAR1M35zyDEaM33oEYa27gn1q2aeNa40jcaIFvR5vHC58P3K6oSmE95cLb46scKHvRJe8rAV0075ZZjDxL')
+
+      
+    } catch (error) {
+      console.log(error)
+      toast.error('some weong in payment')
+    }
+
+  }
 
   const singleBook = async () => {
     try {
