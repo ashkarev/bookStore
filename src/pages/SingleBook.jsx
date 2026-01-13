@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { data, Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
-import { getSingleBook } from "../services/allApi";
+import { buyBook, getSingleBook } from "../services/allApi";
 import {
   Button,
   Modal,
@@ -26,11 +26,38 @@ const SingleBook = () => {
     singleBook();
   }, []);
 
+  
+
   //Stripe
   const onBuyClick=async()=>{
     try {
 
       const stripe=await loadStripe('pk_test_51SocgH5ryYIXAp2yuAR1M35zyDEaM33oEYa27gn1q2aeNa40jcaIFvR5vHC58P3K6oSmE95cLb46scKHvRJe8rAV0075ZZjDxL')
+
+      let reqBody={
+        bookId:bookData._id,
+        bookName:bookData.title,
+        bookDesc:bookData.abstract,
+        bookImage:bookData.imgUrl,
+        sellerMail:bookData.userMail,
+        price:bookData.price,
+        discountPrice:bookData.discountPrice
+
+      }
+
+      let header={
+        Authorization:`Bearer ${token}`
+      }
+
+      let apires=await buyBook(reqBody,header)
+
+      if(apires.status==200){
+        let session=apires.data.session
+        window.location.href=session.url
+      }else{
+        toast.error(apires.response.data.message)
+      }
+      console.log(apires)
 
       
     } catch (error) {
@@ -71,7 +98,7 @@ const SingleBook = () => {
               <h1 className="text-center mt-5"> Author :{bookData.author}</h1>
               <h1 className="mt-5"> pages:{bookData.noOfPage}</h1>
               <h1 className="mt-5">price: {bookData.price}</h1>
-              <button className="border-2 rounded-2xl p-2 bg-blue-500 mt-5 text-white ">
+              <button onClick={onBuyClick} className="border-2 rounded-2xl p-2 bg-blue-500 mt-5 text-white ">
                 Purchase
               </button>
 

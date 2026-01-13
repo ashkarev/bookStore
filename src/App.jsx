@@ -17,6 +17,8 @@ import AdminCareers from "./Admin/Components/AdminCareers";
 import AdminBooks from "./Admin/Components/AdminBooks";
 import AdminSettings from "./Admin/Components/AdminSettings";
 import Career from "./pages/Career";
+import PaymentSuccess from "./components/PaymentSuccess";
+import PaymentFailure from "./components/PaymentFailure";
 
 function App() {
   const [showLoad, setShowLoad] = useState(false);
@@ -43,6 +45,9 @@ function App() {
         <Route path="/admin-books" element={<AdminBooks />} />
         <Route path="/admin-settings" element={<AdminSettings />} />
         <Route path="/career" element={<Career />} />
+        <Route path="/success" element={<PaymentSuccess />} />
+        <Route path="/failure" element={<PaymentFailure />} />
+
 
         <Route path="/*" element={<Pnf />} />
       </Routes>

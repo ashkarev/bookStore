@@ -63,3 +63,7 @@ export const applyJob=async(reqBody,reqHeader)=>{
 export const getAllApplication=async(reqHeader)=>{
     return await axiosConfig('get',`${baseUrl}/getAllApplication`,"",reqHeader)
 }
+
+export const buyBook=async(reqBody,reqHeader)=>{
+    return await axiosConfig('post',`${baseUrl}/buyBook`,reqBody,reqHeader)
+}
