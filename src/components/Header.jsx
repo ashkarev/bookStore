@@ -48,14 +48,14 @@ const onLoggedOut=()=>{
                   <img className='w-9' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4YreOWfDX3kK-QLAbAL4ufCPc84ol2MA8Xg&s" alt="" />
                 </div>
               } dismissOnClick={false}>
-      <Link to={'/profile'} className='p-2'>profile</Link>
+      <Link to={'/profile'} className='p-2 text-black'>profile</Link>
      
-      <button onClick={onLoggedOut} className='p-2'>Log out</button>
+      <button onClick={onLoggedOut} className='p-2 text-black'>Log out</button>
     </Dropdown>
               :
                 <Link to={'/login'}>
               
-                  <button  className='border-0 rounded-3xl  p-2 hover:bg-emerald-400  hover:text-white'>Login</button>
+                  <button  className='border-0 rounded-3xl  p-2 hover:bg-emerald-400  text-black'>Login</button>
 
 </Link>
             }
