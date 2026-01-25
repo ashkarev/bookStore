@@ -9,24 +9,20 @@ import EditProfile from "../components/EditProfile";
 import { authContext } from "../context/AuthContext";
 
 const UserProfile = () => {
-
-const {token}=useContext(authContext)
+  const { token } = useContext(authContext);
 
   const [sellBookFlag, setSellBookFlag] = useState(true);
   const [bookStatusFlag, setBookStatusFlag] = useState(false);
   const [purchaseFlag, setPurchaseFlag] = useState(false);
 
+  const [userDetails, setuserDetails] = useState({});
 
-
-  const [userDetails,setuserDetails]=useState({})
-
-
-  useEffect(()=>{
-  getUserData()
-  },[])
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   const [preview, setPreview] = useState(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg_ri9E8XxXRafeIMA4QGosabTMk_wP7pTDQ&s"
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg_ri9E8XxXRafeIMA4QGosabTMk_wP7pTDQ&s",
   );
 
   const [previwImages, setPreviewImages] = useState([]);
@@ -92,33 +88,28 @@ const {token}=useContext(authContext)
     }
   };
 
-
-  const getUserData=async()=>{
+  const getUserData = async () => {
     try {
-
       // let token=localStorage.getItem('token')
 
-      let header={
-        Authorization:`Bearer ${token}`
+      let header = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      let apires = await getUserDetails(header);
+
+      if (apires.status == 200) {
+        setuserDetails(apires.data);
+      } else {
+        toast.error(apires.data.responce.message);
       }
-
-      let apires=await getUserDetails(header)
-
-      if(apires.status==200){
-
-        setuserDetails(apires.data)
-
-
-
-      }else{
-        toast.error(apires.data.responce.message)
-      }
-      
     } catch (error) {
-      console.log(error)
-      toast.error('sometrhing wwent wrong')
+      console.log(error);
+      toast.error("sometrhing wwent wrong");
     }
-  }
+  };
+
+  
 
   return (
     <div>

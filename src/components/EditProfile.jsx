@@ -41,51 +41,7 @@ const EditProfile = ({ userDetails }) => {
     setPreview(url);
   };
 
-  const onEditClick = async () => {
-    try {
-      //first check the fields are enpty or not
-      if (
-        editData.userName == "" ||
-        editData.password == "" ||
-        editData.bioDescription == "" ||
-        editData.proPic == "" ||
-        editData.confirmPassword == ""
-      ) {
-        toast.error("pls fill the form");
-      } else {
-        if (editData.confirmPassword == editData.password) {
-          //proceed with api
 
-          let token = localStorage.getItem("token");
-
-          let header = {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          };
-
-          let reqBody = new FormData();
-
-          for (let key in editData) {
-            reqBody.append(key, editData[key]);
-          }
-          let apires = await updateUserProfile(editData._id, reqBody, header);
-          console.log(apires)
-          if (apires.status == 200) {
-            toast.success(apires.data.message);
-            console.log(apires);
-          } else {
-            toast.error(apires.response.data.message);
-            console.log(apires);
-          }
-        } else {
-          toast.error("both passwrods are incorrect");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("somethinf wrng hai whhile update");
-    }
-  };
 
   return (
     <>
